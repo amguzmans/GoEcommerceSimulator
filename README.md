@@ -1,24 +1,30 @@
-# Go Store
+# GoEcommerce Simulator
 
-Proyecto simple en **Go + MySQL** para manejar:11
+A full-stack (in progress, just backend for now) e-commerce application built with **Go + MySQL**, originally developed as a team project and later extended into a REST API with JWT authentication and a layered architecture.
 
-* Usuarios
-* Productos
-* Órdenes
+This project started as a collaborative team effort, a TCP-based console application for managing users, products, and orders. I later refactored and extended it into a production-ready REST API with proper authentication, a clean architecture, and a React frontend (in progress).
 
-Este README explica cómo **instalar las dependencias y correr el proyecto localmente usando solo comandos**.
+## Structure of the project
+GoEcommerceSimulator/
+├── backend/
+│   ├── main.go
+│   ├── internal/
+│   │   ├── handlers/       # HTTP layer
+│   │   ├── services/       # Business logic
+│   │   ├── repository/     # Database queries
+│   │   ├── models/         # Data structs
+│   │   └── middleware/     # JWT auth
+│   ├── database/
+│   │   └── schema.sql
+│   └── .env.example
+├── frontend/               # In progress
 
----
-
-# 1. Requisitos
-
-Instalar:
-
+## Requirements
 * Go
 * MySQL Server
 * Git
 
-Verificar instalación:
+Verify instalations
 
 ```bash
 go version
@@ -28,39 +34,37 @@ git --version
 
 ---
 
-# 2. Instalar MySQL Server
+# Install MySQL Server
 
 ## Windows
 
-Instalar **MySQL Server** usando winget:
+Install **MySQL Server** using winget:
 
 ```bash
 winget install Oracle.MySQL
 ```
 
-Verificar instalación:
+Verify instalation
 
 ```bash
 mysql --version
 ```
-Posible problema 
-En caso que la terminal no reconozca mysql tras ser instalado, debes poner la direccion del programa como una nueva variable del sistema en PATH.
 
-Puedes acceder buscando en la barra de busqueda de Windows "Edit enviorment variables"
+If MySQL is not recognized after installation, add its path to your system PATH environment variable. Search for "Edit environment variables" in Windows.
 
-Iniciar el servicio:
+Start the service
 
 ```bash
 net start MySQL
 ```
 
-Si no funciona:
+If that doesnt work
 
 ```bash
 net start MySQL84
 ```
 
-# 3. Clonar el repositorio
+# Clone repository
 
 ```bash
 git clone https://github.com/jfong088/GoEcommerceSimulator.git
@@ -68,8 +72,7 @@ git clone https://github.com/jfong088/GoEcommerceSimulator.git
 
 ---
 
-# 4. Crear las tablas con el schema
-Se crea la base de datos en MySql
+# Create the database
 
 ```bash
 mysql -u root -p
@@ -83,45 +86,32 @@ CREATE DATABASE go_store;
 exit
 ```
 
-Desde la raíz del proyecto ejecutar:
+In the root project, execute the command
 
 ```bash
 mysql -u root -p go_store < src/server/database/schema.sql
 ```
 
-Esto ejecutará automáticamente el archivo:
-
-```
+This will automatically execute the file
+``` bash
 database/schema.sql
 ```
 ---
 
-# 5. Instalar dependencias de Go
-Meterse a la carpeta src/server
-
-Instalar el driver de MySQL:
+# Install Go dependencies
 
 ```bash
-go get github.com/go-sql-driver/mysql
-```
+cd backend 
+go get golang.org/x/crypto/bcrypt
+go get github.com/joho/godotenv
+go get github.com/golang-jwt/jwt/v5
+go get github.com/go-sql-driver-/mysql
 
-Limpiar dependencias:
-
-```bash
 go mod tidy
 ```
 
----
-
-# 6. Configurar conexión a la base de datos
-
-Crear el archivo en la carpeta src:
-
-```
-.env
-```
-
-Configurar tus credenciales:
+Configure environment variables
+Create a .env file inside backend/ based on .env.example:
 
 ```go
 DB_USER=root
@@ -129,57 +119,53 @@ DB_PASSWORD=password
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_NAME=go_store
+JWT_SECRET=your_secret_key
+PORT=8080
 ```
 
-# 7. Correr el proyecto
-
-Primero parte del servidor:
+# Run the server
 
 ```
-cd src/server
+cd backend
 go run main.go
 ```
-
-Segundo parte del cliente:
+# Testing the API
+### Register an user
+```bash
+curl -X POST http://localhost:8080/api/auth/register -H "Content-Type: application/json" -d "{\"mail\":\"user@gmail.com\",\"password\":\"123\",\"role\":\"client\"}"
 
 ```
-cd src/client
-go run client.go
+### Register an admin
+```bash
+curl -X POST http://localhost:8080/api/auth/register -H "Content-Type: application/json" -d "{\"mail\":\"admin@gmail.com\",\"password\":\"123\",\"role\":\"admin\"}"
+
 ```
+### Login as an user 
+```bash
+curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d "{\"mail\":\"user@gmail.com\",\"password\":\"123\"}"
 
-
-# Ejemplo de funcionalidades del administrador 
-## Añadir producto
-![](src/server/imagesREADME/ADDPRODUCT.png)
-## Actualizar stock
-![](src/server/imagesREADME/UPDATESTOCK.png)
-
-## Actualizar precio
-![](src/server/imagesREADME/UPDATEPROCE.png)
-
-## Historial 
-![](src/server/imagesREADME/HISTORY.png)
-
-
-# Ejemplo de funcionalidades del cliente
-## Añadir producto a carrito 
-![](src/server/imagesREADME/ADDTOCART.png)
-## Ver carrito
-![](src/server/imagesREADME/VIEWCART.png)
-## Comprar productos en carrito
-![](src/server/imagesREADME/PLACEORDER.png)
-
-
-
-
-# Futuras mejoras 
-1.- Busqueda de productos-> en vez de mostrar todos los productos disponibles, una mejora seria tambien poder buscar un producto en especifico
-
-2.- Historial de compras-> que el cliente pueda ver sus compras pasadas con el dinero total que gasto, fecha, y el status del producto en completed 
-
-3.- Bannear usuarios-> los admin puedan bloquear mails especificos o vaciarle el carrito a los clientes
-
-# Extras
-- Save status feature -> se utilizo una base de datos de sql para alamacenar usuarios, productos, ordenes, para que aunque se cierre el programa, podemos acceder de nuevo a los datos
-- User registration -> gracias la base de datos, se pueden registrar y verificar usuarios para iniciar sesion
-
+```
+### Login as an admin
+```bash
+curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d "{\"mail\":\"admin@gmail.com\",\"password\":\"123\"}"
+```
+### Create new product (action only an admin can do)
+```bash
+curl -X POST http://localhost:8080/api/products -H "Content-Type: application/json" -H "Authorization: Bearer ADMIN_TOKEN" -d "{\"name\":\"Laptop\",\"price\":999.99,\"amount\":10}"
+```
+### See products
+```bash
+curl http://localhost:8080/api/products -H "Authorization: Bearer YOUR_TOKEN"
+```
+### Add to cart 
+```bash
+curl -X POST http://localhost:8080/api/cart -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_TOKEN" -d "{\"product_name\":\"Laptop\",\"cantidad\":1}"
+```
+### Make an order 
+```bash
+curl -X POST http://localhost:8080/api/orders -H "Authorization: Bearer YOUR_TOKEN"
+```
+### See history (action only an admin can do)
+```bash
+curl http://localhost:8080/api/orders/history -H "Authorization: Bearer ADMIN_TOKEN"
+```
