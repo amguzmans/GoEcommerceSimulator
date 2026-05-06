@@ -1,6 +1,6 @@
 # Go Store
 
-Proyecto simple en **Go + MySQL** para manejar:
+Proyecto simple en **Go + MySQL** para manejar:11
 
 * Usuarios
 * Productos
