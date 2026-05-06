@@ -2,9 +2,10 @@
 
 A full-stack (in progress, just backend for now) e-commerce application built with **Go + MySQL**, originally developed as a team project and later extended into a REST API with JWT authentication and a layered architecture.
 
-This project started as a collaborative team effort, a TCP-based console application for managing users, products, and orders. I later refactored and extended it into a production-ready REST API with proper authentication, a clean architecture, and a React frontend (in progress).
+This project started as a collaborative team effort, a TCP-based console application for managing users, products, and orders. I later refactored and extended it into a production-ready REST API with proper authentication, a clean architecture, and a plan for adding a React frontend (in progress).
 
 ## Structure of the project
+```bash
 GoEcommerceSimulator/
 ├── backend/
 │   ├── main.go
@@ -18,7 +19,7 @@ GoEcommerceSimulator/
 │   │   └── schema.sql
 │   └── .env.example
 ├── frontend/               # In progress
-
+```
 ## Requirements
 * Go
 * MySQL Server
