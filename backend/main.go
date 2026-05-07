@@ -47,5 +47,5 @@ func main() {
 	}
 
 	fmt.Println("Server running on port", port)
-	log.Fatal(http.ListenAndServe(":"+port, mux))
+	log.Fatal(http.ListenAndServe(":"+port, middleware.CORS(mux)))
 }
