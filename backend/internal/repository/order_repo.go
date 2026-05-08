@@ -26,7 +26,7 @@ func GetCart(userID int, db *sql.DB) ([]models.CartItem, error) {
 	}
 	defer rows.Close()
 
-	var items []models.CartItem
+	items := []models.CartItem{} // <- este es el cambio, antes era var items []models.CartItem
 	for rows.Next() {
 		var item models.CartItem
 		rows.Scan(&item.Name, &item.Cantidad, &item.Price, &item.Status)
