@@ -1,6 +1,7 @@
 module github.com/amguzmans/GoEcommerceSimulator/backend
 
-go 1.25.7
+go 1.23.0
+
 
 require github.com/go-sql-driver/mysql v1.10.0
 
