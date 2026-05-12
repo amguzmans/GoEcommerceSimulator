@@ -30,7 +30,10 @@ func CreateProduct(name string, price float64, amount int, image string, db *sql
 	)
 	return err
 }
-
+func DeleteProduct(id int, db *sql.DB) error {
+	_, err := db.Exec("DELETE FROM products WHERE id = ?", id)
+	return err
+}
 func GetProductByName(name string, db *sql.DB) (*models.Product, error) {
 	var p models.Product
 

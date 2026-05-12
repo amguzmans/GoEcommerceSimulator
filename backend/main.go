@@ -32,6 +32,7 @@ func main() {
 	mux.Handle("GET /api/products", middleware.Auth(handlers.GetProducts(db)))
 	mux.Handle("POST /api/products", middleware.Auth(handlers.CreateProduct(db)))
 	mux.Handle("POST /api/products/external", middleware.Auth(handlers.AddExternalProduct(db)))
+	mux.Handle("DELETE /api/products/{id}", middleware.Auth(handlers.DeleteProduct(db)))
 	// Cart
 	mux.Handle("GET /api/cart", middleware.Auth(handlers.GetCart(db)))
 	mux.Handle("POST /api/cart", middleware.Auth(handlers.AddToCart(db)))

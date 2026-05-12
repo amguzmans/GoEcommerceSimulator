@@ -45,7 +45,13 @@ export const createProduct = async (name: string, price: number, amount: number,
   })
   if (!res.ok) throw new Error(await res.text())
 }
-
+export const deleteProduct = async (id: number): Promise<void> => {
+  const res = await fetch(`${BASE_URL}/products/${id}`, {
+    method: "DELETE",
+    headers: headers(),
+  })
+  if (!res.ok) throw new Error(await res.text())
+}
 // External API
 export const getExternalProducts = async (): Promise<ExternalProduct[]> => {
   const res = await fetch("https://fakestoreapi.com/products")

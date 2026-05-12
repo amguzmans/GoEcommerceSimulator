@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/amguzmans/GoEcommerceSimulator/backend/internal/middleware"
 	"github.com/amguzmans/GoEcommerceSimulator/backend/internal/models"
@@ -48,7 +49,29 @@ func CreateProduct(db *sql.DB) http.HandlerFunc {
 	}
 
 }
+func DeleteProduct(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		role := r.Context().Value(middleware.RoleKey).(string)
+		if role != "admin" {
+			http.Error(w, "Forbidden", http.StatusForbidden)
+			return
+		}
 
+		idStr := r.PathValue("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "Invalid product ID", http.StatusBadRequest)
+			return
+		}
+
+		if err := repository.DeleteProduct(id, db); err != nil {
+			http.Error(w, "Could not delete product", http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]string{"message": "Product deleted"})
+	}
+}
 func AddExternalProduct(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req models.CreateProductRequest

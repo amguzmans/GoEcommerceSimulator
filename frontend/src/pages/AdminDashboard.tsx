@@ -54,6 +54,18 @@ export default function AdminDashboard() {
       setTimeout(() => setError(""), 3000)
     }
   }
+  const handleDeleteProduct = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this product?")) return
+    try {
+      await api.deleteProduct(id)
+      setMessage("Product deleted")
+      setTimeout(() => setMessage(""), 3000)
+      fetchData()
+    } catch (err: any) {
+      setError(err.message)
+      setTimeout(() => setError(""), 3000)
+    }
+  }
 
   const handleLogout = () => {
     logout()
@@ -146,6 +158,7 @@ export default function AdminDashboard() {
                   <th className="pb-2">Name</th>
                   <th className="pb-2">Price</th>
                   <th className="pb-2">Stock</th>
+                  <th className="pb-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -154,6 +167,14 @@ export default function AdminDashboard() {
                     <td className="py-2">{p.name}</td>
                     <td className="py-2">${p.price}</td>
                     <td className="py-2">{p.amount}</td>
+                    <td className="py-2">
+                      <button
+                        onClick={() => handleDeleteProduct(p.id)}
+                        className="text-red-500 hover:text-red-700 text-sm"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
