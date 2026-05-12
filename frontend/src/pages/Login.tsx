@@ -46,10 +46,12 @@ export default function Login() {
             </label>
             <input
               type="email"
+              autoComplete="off"
+
               value={mail}
               onChange={e => setMail(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="ana@gmail.com"
+              placeholder="test@gmail.com"
               required
             />
           </div>
@@ -60,6 +62,7 @@ export default function Login() {
             </label>
             <input
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
