@@ -1,6 +1,7 @@
 import type { AuthResponse, Product, CartItem, Order } from "../types"
 
-const BASE_URL = "http://localhost:8080/api"
+const BASE_URL = "https://goecommercesimulator-production.up.railway.app/api"
+
 
 const getToken = () => localStorage.getItem("token")
 
