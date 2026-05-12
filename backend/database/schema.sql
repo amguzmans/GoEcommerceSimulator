@@ -1,5 +1,4 @@
-    DROP DATABASE IF EXISTS go_store;
-CREATE DATABASE go_store;
+
 
 USE go_store;
 
