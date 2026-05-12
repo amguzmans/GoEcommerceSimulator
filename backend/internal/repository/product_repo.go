@@ -13,7 +13,7 @@ func GetAllProducts(db *sql.DB) ([]models.Product, error) {
 	}
 	defer rows.Close()
 
-	var products []models.Product
+	products := []models.Product{}
 	for rows.Next() {
 		var p models.Product
 		rows.Scan(&p.ID, &p.Name, &p.Price, &p.Amount)
