@@ -15,7 +15,7 @@ func GetProducts(db *sql.DB) ([]models.Product, error) {
 	return repository.GetAllProducts(db)
 }
 
-func CreateProduct(name string, price float64, amount int, db *sql.DB) error {
+func CreateProduct(name string, price float64, amount int, image string, db *sql.DB) error {
 	if name == "" {
 		return fmt.Errorf("name is required")
 	}
@@ -26,7 +26,7 @@ func CreateProduct(name string, price float64, amount int, db *sql.DB) error {
 		return fmt.Errorf("amount cannot be negative")
 	}
 
-	return repository.CreateProduct(name, price, amount, db)
+	return repository.CreateProduct(name, price, amount, image, db)
 }
 
 func AddToCart(userID int, productName string, cantidad int, db *sql.DB) error {

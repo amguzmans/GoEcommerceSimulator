@@ -26,7 +26,7 @@ func GetCart(userID int, db *sql.DB) ([]models.CartItem, error) {
 	}
 	defer rows.Close()
 
-	items := []models.CartItem{} // <- este es el cambio, antes era var items []models.CartItem
+	items := []models.CartItem{}
 	for rows.Next() {
 		var item models.CartItem
 		rows.Scan(&item.Name, &item.Cantidad, &item.Price, &item.Status)
@@ -67,7 +67,7 @@ func GetOrderHistory(db *sql.DB) ([]models.Order, error) {
 	}
 	defer rows.Close()
 
-	var orders []models.Order
+	orders := []models.Order{}
 	for rows.Next() {
 		var o models.Order
 		rows.Scan(&o.ID, &o.UserID, &o.ProductID, &o.Cantidad, &o.Status, &o.Fecha)

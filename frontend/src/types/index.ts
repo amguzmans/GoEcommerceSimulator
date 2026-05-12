@@ -14,6 +14,7 @@ export interface Product {
   name: string
   price: number
   amount: number
+  image: ''
 }
 
 export interface CartItem {
@@ -26,4 +27,13 @@ export interface CartItem {
 export interface Order {
   message: string
   total: number
+}
+
+export interface ExternalProduct {
+  id: number
+  title: string
+  price: number
+  description: string
+  category: string
+  image: string
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func GetAllProducts(db *sql.DB) ([]models.Product, error) {
-	rows, err := db.Query("SELECT id, name, price, amount FROM products")
+	rows, err := db.Query("SELECT id, name, price, amount, image FROM products")
 	if err != nil {
 		return nil, err
 	}
@@ -16,17 +16,17 @@ func GetAllProducts(db *sql.DB) ([]models.Product, error) {
 	products := []models.Product{}
 	for rows.Next() {
 		var p models.Product
-		rows.Scan(&p.ID, &p.Name, &p.Price, &p.Amount)
+		rows.Scan(&p.ID, &p.Name, &p.Price, &p.Amount, &p.Image)
 		products = append(products, p)
 	}
 
 	return products, nil
 }
 
-func CreateProduct(name string, price float64, amount int, db *sql.DB) error {
+func CreateProduct(name string, price float64, amount int, image string, db *sql.DB) error {
 	_, err := db.Exec(
-		"INSERT INTO products (name, price, amount) VALUES (?, ?, ?)",
-		name, price, amount,
+		"INSERT INTO products (name, price, amount, image) VALUES (?, ?, ?, ?)",
+		name, price, amount, image,
 	)
 	return err
 }
@@ -35,8 +35,8 @@ func GetProductByName(name string, db *sql.DB) (*models.Product, error) {
 	var p models.Product
 
 	err := db.QueryRow(
-		"SELECT id, name, price, amount FROM products WHERE LOWER(name) = LOWER(?)", name,
-	).Scan(&p.ID, &p.Name, &p.Price, &p.Amount)
+		"SELECT id, name, price, amount, image FROM products WHERE LOWER(name) = LOWER(?)", name,
+	).Scan(&p.ID, &p.Name, &p.Price, &p.Amount, &p.Image)
 
 	if err != nil {
 		return nil, err

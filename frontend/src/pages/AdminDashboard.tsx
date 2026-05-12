@@ -10,6 +10,7 @@ export default function AdminDashboard() {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
   const [amount, setAmount] = useState("")
+  const [image, setImage] = useState("")
   const [error, setError] = useState("")
   const [message, setMessage] = useState("")
   const [loading, setLoading] = useState(true)
@@ -27,8 +28,8 @@ export default function AdminDashboard() {
         api.getProducts(),
         api.getOrderHistory(),
       ])
-      setProducts(p)
-      setOrders(o)
+      setProducts(p ?? [])
+      setOrders(o ?? [])
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -40,11 +41,12 @@ export default function AdminDashboard() {
     e.preventDefault()
     setError("")
     try {
-      await api.createProduct(name, parseFloat(price), parseInt(amount))
+      await api.createProduct(name, parseFloat(price), parseInt(amount), image)
       setMessage("Product created successfully")
       setName("")
       setPrice("")
       setAmount("")
+      setImage("")
       setTimeout(() => setMessage(""), 3000)
       fetchData()
     } catch (err: any) {
@@ -116,6 +118,13 @@ export default function AdminDashboard() {
               className="border border-gray-300 rounded-lg px-3 py-2 w-32"
               required
             />
+            <input
+              type="text"
+              placeholder="Image URL (optional)"
+              value={image}
+              onChange={e => setImage(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 flex-1 min-w-48"
+            />
             <button
               type="submit"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -178,11 +187,10 @@ export default function AdminDashboard() {
                     <td className="py-2">{o.product_id}</td>
                     <td className="py-2">{o.cantidad}</td>
                     <td className="py-2">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        o.status === "completed"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs ${o.status === "completed"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                        }`}>
                         {o.status}
                       </span>
                     </td>

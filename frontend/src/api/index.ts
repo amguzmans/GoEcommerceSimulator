@@ -1,4 +1,4 @@
-import type { AuthResponse, Product, CartItem, Order } from "../types"
+import type { AuthResponse, Product, CartItem, Order, ExternalProduct } from "../types"
 
 const BASE_URL = "https://goecommercesimulator-production.up.railway.app/api"
 
@@ -37,11 +37,27 @@ export const getProducts = async (): Promise<Product[]> => {
   return res.json()
 }
 
-export const createProduct = async (name: string, price: number, amount: number): Promise<void> => {
+export const createProduct = async (name: string, price: number, amount: number, image: string): Promise<void> => {
   const res = await fetch(`${BASE_URL}/products`, {
     method: "POST",
     headers: headers(),
-    body: JSON.stringify({ name, price, amount }),
+    body: JSON.stringify({ name, price, amount, image }),
+  })
+  if (!res.ok) throw new Error(await res.text())
+}
+
+// External API
+export const getExternalProducts = async (): Promise<ExternalProduct[]> => {
+  const res = await fetch("https://fakestoreapi.com/products")
+  if (!res.ok) throw new Error("Could not fetch external products")
+  return res.json()
+}
+
+export const addExternalProduct = async (name: string, price: number, image: string): Promise<void> => {
+  const res = await fetch(`${BASE_URL}/products/external`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ name, price, amount: 99, image }),
   })
   if (!res.ok) throw new Error(await res.text())
 }
